@@ -73,11 +73,11 @@ namespace MarketplaceAPI.Controllers
                     throw;
                 }
 
-                return NoContent();
+                return Ok();
             }
             else
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 
