@@ -26,5 +26,19 @@ namespace MarketplaceAPI.Controllers
             return await _context.Products.ToListAsync();
         }
 
+        // GET: product/id
+        [HttpGet("product/{id}")]
+        public async Task<ActionResult<Product>> GetProduct(long id)
+        {
+            var Product = await _context.Products.FindAsync(id);
+
+            if (Product == null)
+            {
+                return NotFound();
+            }
+
+            return Product;
+        }
+
     }
 }
