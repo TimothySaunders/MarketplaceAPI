@@ -19,16 +19,16 @@ namespace MarketplaceAPI.Controllers
             _context = context;
         }
 
-        // GET: products
+        // GET: /products
         [HttpGet("products")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
         {
             return await _context.Products.ToListAsync();
         }
 
-        // GET: product/id
+        // GET: /product/id
         [HttpGet("product/{id}")]
-        public async Task<ActionResult<Product>> GetProduct(long id)
+        public async Task<ActionResult<Product>> GetById(long id)
         {
             var Product = await _context.Products.FindAsync(id);
 
@@ -40,5 +40,14 @@ namespace MarketplaceAPI.Controllers
             return Product;
         }
 
+        // POST: /product
+        [HttpPost("product")]
+        public async Task<ActionResult<Product>> PostProduct(Product product)
+        {
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+        }
     }
 }
