@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using MarketplaceAPI.Models;
+using MarketplaceAPI.Data;
 
 namespace MarketplaceAPI
 {
@@ -44,6 +45,7 @@ namespace MarketplaceAPI
                     var context = serviceScope.ServiceProvider.GetRequiredService<ProductContext>();
                     context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
+                    ProductSeedData.Seed(context);
                 }
                 app.UseDeveloperExceptionPage();
             }
