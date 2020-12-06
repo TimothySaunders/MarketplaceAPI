@@ -43,13 +43,13 @@ namespace MarketplaceAPI.Controllers
 
         // POST: /product
         [HttpPost("product")]
-        public async Task<ActionResult<ProductDTO>> PostProduct(ProductDTO dtoProduct)
+        public async Task<ActionResult<ProductDTO>> PostProduct([FromForm]ProductDTO dtoProduct)
         {
             var product = DTOToProduct(dtoProduct);
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, ProductToDTO(product));
+            return Ok(ProductToDTO(product));
         }
 
         // PUT: /products/{id}
