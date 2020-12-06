@@ -28,7 +28,7 @@ namespace MarketplaceAPI.Controllers
 
         // GET: /product/id
         [HttpGet("product/{id}")]
-        public async Task<ActionResult<Product>> GetById(long id)
+        public async Task<ActionResult<Product>> GetProduct(long id)
         {
             var Product = await _context.Products.FindAsync(id);
 
@@ -47,7 +47,7 @@ namespace MarketplaceAPI.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         }
 
         // PUT: /products/{id}
@@ -76,6 +76,22 @@ namespace MarketplaceAPI.Controllers
                     throw;
                 }
             }
+
+            return NoContent();
+        }
+
+        // DELETE: product/{id}
+        [HttpDelete("Prodcut/{id}")]
+        public async Task<IActionResult> DeleteProduct(long id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
