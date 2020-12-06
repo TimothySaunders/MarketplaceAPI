@@ -43,12 +43,13 @@ namespace MarketplaceAPI.Controllers
 
         // POST: /product
         [HttpPost("product")]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<ProductDTO>> PostProduct(ProductDTO dtoProduct)
         {
+            var product = DTOToProduct(dtoProduct);
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, ProductToDTO(product));
         }
 
         // PUT: /products/{id}
@@ -109,6 +110,16 @@ namespace MarketplaceAPI.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price.ToString()
+            };
+        }
+
+        private Product DTOToProduct(ProductDTO dtoProduct)
+        {
+            return new Product
+            {
+                Id = dtoProduct.Id,
+                Name = dtoProduct.Name,
+                Price = decimal.Parse(dtoProduct.Price)
             };
         }
     }
