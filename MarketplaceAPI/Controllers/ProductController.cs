@@ -54,32 +54,31 @@ namespace MarketplaceAPI.Controllers
 
         // PUT: /products/{id}
         [HttpPut("Product/{id}")]
-        public async Task<IActionResult> PutProduct(long id, Product product)
+        public async Task<IActionResult> PutProduct(long id, [FromForm] ProductDTO dtoProduct)
         {
-            if (id != product.Id)
+            if (ProductExists(id))
             {
-                return BadRequest();
-            }
+                var product = await _context.Products.FindAsync(id);
+                product.Name = dtoProduct.Name ?? product.Name;
+                product.Price = (dtoProduct.Price == null) ? product.Price : decimal.Parse(dtoProduct.Price);
 
-            _context.Entry(product).State = EntityState.Modified; 
+                _context.Entry(product).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync(); 
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
+                try
                 {
-                    return NotFound();
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
                     throw;
                 }
-            }
 
-            return NoContent();
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE: product/{id}
