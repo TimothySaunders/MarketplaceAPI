@@ -82,7 +82,7 @@ namespace MarketplaceAPI.Controllers
         }
 
         // DELETE: product/{id}
-        [HttpDelete("Prodcut/{id}")]
+        [HttpDelete("product/{id}")]
         public async Task<IActionResult> DeleteProduct(long id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -94,7 +94,7 @@ namespace MarketplaceAPI.Controllers
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool ProductExists(long id)
