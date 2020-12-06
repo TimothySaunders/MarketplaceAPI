@@ -49,5 +49,40 @@ namespace MarketplaceAPI.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
+
+        // PUT: /products/{id}
+        [HttpPut("Product/{id}")]
+        public async Task<IActionResult> PutProduct(long id, Product product)
+        {
+            if (id != product.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(product).State = EntityState.Modified; 
+
+            try
+            {
+                await _context.SaveChangesAsync(); 
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool ProductExists(long id)
+        {
+            return _context.Products.Any(product => product.Id == id);
+        }
     }
 }
