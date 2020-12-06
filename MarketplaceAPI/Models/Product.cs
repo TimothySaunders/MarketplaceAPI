@@ -1,10 +1,9 @@
-﻿using System;
-namespace MarketplaceAPI.Models
+﻿namespace MarketplaceAPI.Models
 {
     public class Product
     {
-        public Product()
-        {
-        }
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
     }
 }
