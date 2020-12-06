@@ -38,6 +38,13 @@ namespace MarketplaceAPI
         {
             if (env.IsDevelopment())
             {
+                // drops and recreates db, seeds using data in ProductContext.cs in the process
+                using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+                {
+                    var context = serviceScope.ServiceProvider.GetRequiredService<ProductContext>();
+                    context.Database.EnsureDeleted();
+                    context.Database.EnsureCreated();
+                }
                 app.UseDeveloperExceptionPage();
             }
 
