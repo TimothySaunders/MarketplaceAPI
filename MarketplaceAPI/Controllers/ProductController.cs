@@ -21,23 +21,24 @@ namespace MarketplaceAPI.Controllers
 
         // GET: /products
         [HttpGet("products")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _context.Products.ToListAsync();
+            return products.Select(product => ProductToDTO(product)).ToArray();
         }
 
         // GET: /product/id
         [HttpGet("product/{id}")]
-        public async Task<ActionResult<Product>> GetProduct(long id)
+        public async Task<ActionResult<ProductDTO>> GetProduct(long id)
         {
-            var Product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-            if (Product == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return Product;
+            return ProductToDTO(product);
         }
 
         // POST: /product
@@ -99,6 +100,16 @@ namespace MarketplaceAPI.Controllers
         private bool ProductExists(long id)
         {
             return _context.Products.Any(product => product.Id == id);
+        }
+
+        private ProductDTO ProductToDTO(Product product)
+        {
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price.ToString()
+            };
         }
     }
 }
