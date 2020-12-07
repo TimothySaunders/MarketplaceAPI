@@ -12,6 +12,7 @@ Simple RESTful API for CRUD actions on a product database built using .NET Core 
 
 **Alternative Option:** Ensure Connection string is correct for local postgresql databse, in appsettings.json
 > - Password must be set to the password user chose during postgres installation (Windows), or User Id / Password combination if not using the postgres superuser("postgres")
+> - default port for local postgresql is 5432
 > - If running on MacOS there may be no password set in which case both "User ID=..." and "Password=..." can be removed
 > - In the unlikely event you already have a Postgres database named ProductsDB you should change "database=..." to a name of your own choosing
 
