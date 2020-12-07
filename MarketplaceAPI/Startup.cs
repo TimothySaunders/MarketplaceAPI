@@ -52,8 +52,6 @@ namespace MarketplaceAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -61,8 +59,6 @@ namespace MarketplaceAPI
             });
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
